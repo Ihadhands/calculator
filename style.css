@@ -1,9 +1,8 @@
 body {
-    display: flex;
+    
 }
 
-.container {
+.calculator {
+    padding: 350px;
     border: 2px solid black;
-    padding: 100px;
-    
 }
