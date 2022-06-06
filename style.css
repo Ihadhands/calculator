@@ -1,0 +1,9 @@
+body {
+    display: flex;
+}
+
+.container {
+    border: 2px solid black;
+    padding: 100px;
+    
+}
