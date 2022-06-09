@@ -4,62 +4,77 @@ const calcScreen = document.querySelector('.screen');
 console.log(matches);
 console.log(btn);
 
-
+let operator = '';
+let firstInt = 0;
+let waitingForOperator = true;
+let secondInt = '';
 
 function addition(a,b) {
-    return a + b;
+    console.log(a);
+    console.log(b);
+    return +a + +b;
+
 }
 
 function subtraction(a,b) {
+    console.log(a)
+    console.log(b)
     return a - b;
 }
 
 function multiply(a,b) {
+    console.log(a, b);
     return a * b;
 }
 
 function division(a,b) {
+    console.log(a);
+    console.log(b);
     return a / b;
 }
 
 function operate(operator, a, b) {
     if (operator === '+') {
-        return addition(a,b);
+        firstInt = addition(a,b); 
+        calcScreen.textContent = firstInt;
     } else if (operator === '-') {
-        return subtraction(a,b);
+        firstInt = subtraction(a,b); 
+        calcScreen.textContent = firstInt;
     } else if (operator === '/') {
-        return division(a,b);
+        firstInt = division(a,b); 
+        calcScreen.textContent = firstInt;
     } else if (operator === '*') {
-        return multiply(a,b);
+        firstInt = multiply(a,b); 
+        calcScreen.textContent = firstInt;
     } else {
         return 'Incorrect input';
     }
 }
 
-/*function display() {
-    calcScreen.textContent = calculator;
-}*/
-
 btn.addEventListener('click', function(e) {
     if (e.target.classList.contains('operator')) {
         operator = e.target.value;
-        console.log(operator);
+        waitingForOperator = false;
+        calcScreen.textContent += operator;
+        
     }
     if (e.target.classList.contains('equals')) {
-        console.log('equals', e.target.value);
+        operate(operator, firstInt, secondInt);
+        secondInt = '';
     }
     if (e.target.classList.contains('decimal')) {
         console.log('decimal', e.target.value);
     }
     if (e.target.classList.contains('all-clear')) {
-        console.log('all-clear', e.target.value);
+        allClear();
+        console.log(allClear);
     }
     if (e.target.classList.contains('delete')) {
         console.log('delete', e.target.value);
     }
     if (e.target.classList.contains('number')) {
         inputNumber(e.target.value);
-        firstInt === '' ? firstInt = e.target.value : firstInt += e.target.value;
+        storeNum(e.target.value);
     }
 });
 
@@ -67,8 +82,22 @@ function inputNumber(num) {
     return calcScreen.textContent === '0' ? calcScreen.textContent = num : calcScreen.textContent += num;
 }
 
-let operator = '';
-let firstInt = '';
-let secondInt = '';
+function storeNum(num) {
+    if (firstInt === 0 && waitingForOperator === true) {
+        firstInt = num;
+    } else if (waitingForOperator === true) {
+        firstInt += num;
+    } else if (secondInt = '' && waitingForOperator === false) {
+        secondInt = num;
+    } else {
+        secondInt += num;
+    }
+}
 
-
+function allClear() {
+    operator = '';
+    firstInt = 0;
+    waitingForOperator = true;
+    secondInt = '';
+    calcScreen.textContent = firstInt;
+}
