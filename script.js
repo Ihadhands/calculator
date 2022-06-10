@@ -9,43 +9,40 @@ let firstInt = 0;
 let waitingForOperator = true;
 let secondInt = '';
 
-function addition(a,b) {
-    console.log(a);
-    console.log(b);
-    return +a + +b;
-
+function inputNumber(num) {
+    return calcScreen.textContent === '0' ? calcScreen.textContent = num : calcScreen.textContent += num;
 }
 
-function subtraction(a,b) {
-    console.log(a)
-    console.log(b)
-    return a - b;
+function storeNum(num) {
+    if (firstInt === 0 && waitingForOperator === true) {
+        firstInt = num;
+    } else if (waitingForOperator === true) {
+        firstInt += num;
+    } else if (secondInt === '' && waitingForOperator === false) {
+        secondInt = num;
+    } else {
+        secondInt += num;
+    }
 }
 
-function multiply(a,b) {
-    console.log(a, b);
-    return a * b;
-}
-
-function division(a,b) {
-    console.log(a);
-    console.log(b);
-    return a / b;
-}
-
-function operate(operator, a, b) {
+function operate(operator, firstInt, secondInt) {
+    let result = '';
     if (operator === '+') {
-        firstInt = addition(a,b); 
-        calcScreen.textContent = firstInt;
+        result = +firstInt + +secondInt;
+        calcScreen.textContent = result;
+        return result;
     } else if (operator === '-') {
-        firstInt = subtraction(a,b); 
-        calcScreen.textContent = firstInt;
+        result = firstInt - secondInt;
+        calcScreen.textContent = result;
+        return result;
     } else if (operator === '/') {
-        firstInt = division(a,b); 
-        calcScreen.textContent = firstInt;
+        result = firstInt / secondInt;
+        calcScreen.textContent = result;
+        return result;
     } else if (operator === '*') {
-        firstInt = multiply(a,b); 
-        calcScreen.textContent = firstInt;
+        result = firstInt * secondInt;
+        calcScreen.textContent = result;
+        return result;
     } else {
         return 'Incorrect input';
     }
@@ -56,11 +53,12 @@ btn.addEventListener('click', function(e) {
         operator = e.target.value;
         waitingForOperator = false;
         calcScreen.textContent += operator;
-        
     }
     if (e.target.classList.contains('equals')) {
-        operate(operator, firstInt, secondInt);
+        let result = operate(operator, firstInt, secondInt);
         secondInt = '';
+        firstInt = result;
+        console.log(firstInt);
     }
     if (e.target.classList.contains('decimal')) {
         console.log('decimal', e.target.value);
@@ -78,26 +76,13 @@ btn.addEventListener('click', function(e) {
     }
 });
 
-function inputNumber(num) {
-    return calcScreen.textContent === '0' ? calcScreen.textContent = num : calcScreen.textContent += num;
-}
 
-function storeNum(num) {
-    if (firstInt === 0 && waitingForOperator === true) {
-        firstInt = num;
-    } else if (waitingForOperator === true) {
-        firstInt += num;
-    } else if (secondInt = '' && waitingForOperator === false) {
-        secondInt = num;
-    } else {
-        secondInt += num;
-    }
-}
 
 function allClear() {
     operator = '';
     firstInt = 0;
     waitingForOperator = true;
+    evaluate = false;
     secondInt = '';
     calcScreen.textContent = firstInt;
 }
