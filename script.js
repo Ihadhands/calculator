@@ -1,6 +1,7 @@
 const btn = document.querySelector('.calculator-buttons');
 const matches = document.querySelectorAll('div');
-const calcScreen = document.querySelector('.screen');
+const bottomScreen = document.querySelector('.bottom-screen');
+const equation = document.querySelector('.top-screen');
 console.log(matches);
 console.log(btn);
 
@@ -8,9 +9,11 @@ let operator = '';
 let firstInt = 0;
 let waitingForOperator = true;
 let secondInt = '';
+let result = '';
+
 
 function inputNumber(num) {
-    return calcScreen.textContent === '0' ? calcScreen.textContent = num : calcScreen.textContent += num;
+    return equation.textContent === '0' ? equation.textContent = num : equation.textContent += num;
 }
 
 function storeNum(num) {
@@ -26,36 +29,43 @@ function storeNum(num) {
 }
 
 function operate(operator, firstInt, secondInt) {
-    let result = '';
-    if (operator === '+') {
-        result = +firstInt + +secondInt;
-        calcScreen.textContent = result;
-        return result;
-    } else if (operator === '-') {
-        result = firstInt - secondInt;
-        calcScreen.textContent = result;
-        return result;
-    } else if (operator === '/') {
-        result = firstInt / secondInt;
-        calcScreen.textContent = result;
-        return result;
-    } else if (operator === '*') {
-        result = firstInt * secondInt;
-        calcScreen.textContent = result;
-        return result;
-    } else {
-        return 'Incorrect input';
+    switch(operator) {
+        case '+':
+            result = parseFloat(firstInt) + parseFloat(secondInt);
+            bottomScreen.textContent = result;
+            
+        break;
+        case '-':
+            result = parseFloat(firstInt) - parseFloat(secondInt);
+            bottomScreen.textContent = result;
+        break;
+        case '*':
+            result = parseFloat(firstInt) * parseFloat(secondInt);
+            bottomScreen.textContent = result;
+        break;
+        case '/':
+            if ((firstInt === '0') || (secondInt === '0')) {
+                alert('Please');
+            }
+            result = parseFloat(firstInt) / parseFloat(secondInt);
+            bottomScreen.textContent = result;
     }
+    
 }
 
 btn.addEventListener('click', function(e) {
     if (e.target.classList.contains('operator')) {
         operator = e.target.value;
         waitingForOperator = false;
-        calcScreen.textContent += operator;
+        equation.textContent += operator;
+        if (waitingForOperator === false && secondInt !== '') {
+            operate(operator, firstInt, secondInt);
+            firstInt = result;
+            secondInt = '';
+        }
     }
     if (e.target.classList.contains('equals')) {
-        let result = operate(operator, firstInt, secondInt);
+        operate(operator, firstInt, secondInt);
         secondInt = '';
         firstInt = result;
         console.log(firstInt);
@@ -84,5 +94,6 @@ function allClear() {
     waitingForOperator = true;
     evaluate = false;
     secondInt = '';
-    calcScreen.textContent = firstInt;
+    bottomScreen.textContent = firstInt;
+    equation.textContent = firstInt;
 }
