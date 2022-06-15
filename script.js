@@ -8,7 +8,7 @@ const clear = document.querySelector('.all-clear');
 console.log(btn);
 
 let operator = '';
-let firstInt = 0;
+let firstInt = '';
 let waitingForOperator = true;
 let secondInt = '';
 let result = '';
@@ -17,7 +17,6 @@ let secondOp = '';
 
 numbers.forEach(number => {
     number.addEventListener('click', event => {
-        inputNumber(event.target.value);
         storeNum(event.target.value);
     });
 })
@@ -31,9 +30,11 @@ chooseOp.forEach(op => {
     })
 });
 
+
 equalBtn.addEventListener('click', function() {
     operate(operator, firstInt, secondInt); 
     firstInt = result;
+    firstOp = '';
     secondInt = '';
 });
 
@@ -41,20 +42,25 @@ clear.addEventListener('click', () => {
     allClear();
 });
 
-function inputNumber(num) {
-    return equation.textContent === '0' ? equation.textContent = num : equation.textContent += num;
-};
 
 function storeNum(num) {
     
-    if (firstInt === 0 && waitingForOperator === true) {
+    if (firstInt === '' && waitingForOperator === true) {
+        if ((num === '.' && firstInt.includes('.'))) return;
         firstInt = num;
+        equation.textContent = firstInt;
     } else if (waitingForOperator === true) {
+        if ((num === '.' && firstInt.includes('.'))) return;
         firstInt += num;
+        equation.textContent = firstInt;
     } else if (secondInt === '' && waitingForOperator === false) {
+        if ((num === '.' && secondInt.includes('.'))) return;
         secondInt = num;
+        equation.textContent = secondInt;
     } else {
+        if ((num === '.' && secondInt.includes('.'))) return;
         secondInt += num;
+        equation.textContent = secondInt;
     }
 };
 
@@ -62,14 +68,17 @@ function operate(operator, firstInt, secondInt) {
     switch(operator) {
         case '+':
             result = parseFloat(firstInt) + parseFloat(secondInt);
+            result = Math.round((result + Number.EPSILON) * 100) / 100;
             bottomScreen.textContent = result;
         break;
         case '-':
             result = parseFloat(firstInt) - parseFloat(secondInt);
+            result = Math.round((result + Number.EPSILON) * 100) / 100;
             bottomScreen.textContent = result;
         break;
         case '*':
             result = parseFloat(firstInt) * parseFloat(secondInt);
+            result = Math.round((result + Number.EPSILON) * 100) / 100;
             bottomScreen.textContent = result;
         break;
         case '/':
@@ -78,7 +87,7 @@ function operate(operator, firstInt, secondInt) {
                 allClear();
             } else {
                 result = parseFloat(firstInt) / parseFloat(secondInt);
-                result = Math.round((result + Number.EPSILON) * 100) / 100
+                result = Math.round((result + Number.EPSILON) * 100) / 100;
                 bottomScreen.textContent = result;
             };
     };
@@ -104,10 +113,9 @@ function firstSecondOp(operator){
     
 }
 
-
 function allClear() {
     operator = '';
-    firstInt = 0;
+    firstInt = '';
     waitingForOperator = true;
     evaluate = false;
     secondInt = '';
