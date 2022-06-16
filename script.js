@@ -1,3 +1,5 @@
+// QuerySelectors for buttons and textContent elements
+
 const btn = document.querySelector('.calculator-buttons');
 const bottomScreen = document.querySelector('.bottom-screen');
 const equation = document.querySelector('.top-screen');
@@ -6,7 +8,8 @@ const chooseOp = document.querySelectorAll('.operator');
 const equalBtn = document.querySelector('.equals');
 const clear = document.querySelector('.all-clear');
 const deletePrevious = document.querySelector('.delete');
-console.log(btn);
+
+// Variables to allow the functions of the calculator
 
 let operator = '';
 let firstInt = '';
@@ -15,6 +18,8 @@ let secondInt = '';
 let result = '';
 let firstOp = '';
 let secondOp = '';
+
+//Event listeners to make buttons functional
 
 numbers.forEach(number => {
     number.addEventListener('click', event => {
@@ -60,6 +65,8 @@ deletePrevious.addEventListener('click', () => {
         firstInt = firstInt.slice(0, firstInt.length - 1);
     }
 })
+
+// Logic for declaring variables and math functions
 
 function storeNum(num) {
     
