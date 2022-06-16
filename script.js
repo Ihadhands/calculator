@@ -5,6 +5,7 @@ const numbers = document.querySelectorAll('.number');
 const chooseOp = document.querySelectorAll('.operator');
 const equalBtn = document.querySelector('.equals');
 const clear = document.querySelector('.all-clear');
+const deletePrevious = document.querySelector('.delete');
 console.log(btn);
 
 let operator = '';
@@ -42,6 +43,23 @@ clear.addEventListener('click', () => {
     allClear();
 });
 
+deletePrevious.addEventListener('click', () => {
+    equation.textContent = equation.textContent.slice(0, -1);
+
+    if (firstInt !== '' && firstOp !== '' && secondOp !== '' && secondInt !== '') {
+        secondInt = secondInt.slice(0, secondInt.length - 1);
+    }else if (firstInt !== '' && firstOp !== '' && secondOp == '' && secondInt !== '') {
+        secondInt = secondInt.slice(0, secondInt.length - 1); 
+    }else if (firstInt !== '' && firstOp !== '' && secondOp !== '' && secondInt === '') {
+        secondOp = secondOp.slice(0, secondOp.length - 1);
+    }else if (firstInt !== '' && firstOp == '' && secondOp !== '' && secondInt == '') {
+        secondOp = secondInt.slice(0, secondInt.length - 1);
+    }else if (firstInt !== '' && firstOp !== '' && secondOp === '' && secondInt === '') {
+        firstOp = firstOp.slice(0, firstOp.length - 1);
+    } else if (firstInt !== '' && firstOp === '' && secondOp === '' && secondInt === '') {
+        firstInt = firstInt.slice(0, firstInt.length - 1);
+    }
+})
 
 function storeNum(num) {
     
